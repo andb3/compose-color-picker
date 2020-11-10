@@ -21,6 +21,13 @@ import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * An opacity picker that allows the user to select an alpha value from a slider
+ * @param color The color shown on the picker (should have alpha of 1f)
+ * @param alpha The current alpha
+ * @param modifier The modifier to be applied to the OpacityPicker
+ * @param onSelect The callback function for when the user changes the opacity
+ */
 @Composable
 fun OpacityPicker(color: Color, alpha: Float, modifier: Modifier = Modifier, onSelect: (alpha: Float) -> Unit) {
     Row {

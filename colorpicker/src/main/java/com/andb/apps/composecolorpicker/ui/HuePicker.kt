@@ -17,11 +17,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorStop
 import androidx.compose.ui.graphics.VerticalGradient
 import androidx.compose.ui.unit.dp
-import com.andb.apps.composecolorpicker.util.HSB
+import com.andb.apps.composecolorpicker.data.HSB
 
-import com.andb.apps.composecolorpicker.util.toColor
+import com.andb.apps.composecolorpicker.data.toColor
 
-
+/**
+ * A color picker that allows the user to select a hue value
+ * Often used along with a [SaturationBrightnessPicker] to select a full color
+ * @param hue The current hue
+ * @param modifier The modifier to be applied to the HuePicker
+ * @param onSelect The callback function for when the user changes the saturation or brightness
+ */
 @Composable
 fun HuePicker(colors: List<Color>, hue: Float, modifier: Modifier = Modifier, onSelect: (hue: Float) -> Unit) {
     val colorStops = colors.mapIndexed { index, color -> ColorStop(1f / colors.size * index, color) }

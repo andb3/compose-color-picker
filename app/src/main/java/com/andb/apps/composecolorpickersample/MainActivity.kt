@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                         Column {
                             when (currentTab.value) {
                                 Tabs.PICKER -> {
-                                    ExpandedColorPicker(_selected = currentColor.value, modifier = Modifier.padding(32.dp)) {
+                                    ExpandedColorPicker(selected = currentColor.value, modifier = Modifier.padding(32.dp)) {
                                         currentColor.value = it
                                     }
                                 }
