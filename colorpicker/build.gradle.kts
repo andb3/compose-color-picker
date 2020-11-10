@@ -1,7 +1,10 @@
 plugins {
     id("com.android.library")
+    id("com.github.dcendents.android-maven")
     kotlin("android")
 }
+
+group = "com.github.andb3"
 
 android {
     compileSdkVersion(Versions.compileSDK)
@@ -40,7 +43,7 @@ android {
 }
 
 dependencies {
-
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")
     implementation("androidx.core:core-ktx:1.3.1")
     implementation("androidx.appcompat:appcompat:1.2.0")
