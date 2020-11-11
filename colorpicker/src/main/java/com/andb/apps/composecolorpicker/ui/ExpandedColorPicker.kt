@@ -27,19 +27,12 @@ private val hues: List<Color> = (0..360).map { HSB(it / 360f, 1f, 1f).toColor() 
 @Composable
 fun ExpandedColorPicker(selected: Color, modifier: Modifier = Modifier, onSelect: (color: Color) -> Unit) {
     val oldHSB = remember { mutableStateOf(selected.toHSB()) }
-
-    val hue = remember { mutableStateOf(selected.toHSB().hue) }
-    val saturation = remember { mutableStateOf(selected.toHSB().saturation) }
-    val brightness = remember { mutableStateOf(selected.toHSB().brightness) }
     val alpha = remember { mutableStateOf(1f) }
 
     // only update the HSB values from the outside Color if it is different from what the user selected to prevent lost data
     // i.e. if the color is Black, Color.toHSB will make the hue 0, when the user could have chosen any hue
-    if (selected != oldHSB.value.toColor()) {
+    if (selected != oldHSB.value.toColor() || selected.alpha != alpha.value) {
         val tempHSB = selected.toHSB()
-        hue.value = tempHSB.hue
-        saturation.value = tempHSB.saturation
-        brightness.value = tempHSB.brightness
         alpha.value = selected.alpha
         oldHSB.value = tempHSB
     }
@@ -49,24 +42,20 @@ fun ExpandedColorPicker(selected: Color, modifier: Modifier = Modifier, onSelect
         Row {
             val rowHeight = remember { mutableStateOf(0) } // track height of SaturationLightnessPicker and give it to HuePicker since fillMaxHeight doesn't work as row has Constraints.Infinite so fillMax doesn't work
             SaturationBrightnessPicker(
-                hue.value, saturation.value, brightness.value,
+                oldHSB.value.hue, oldHSB.value.saturation, oldHSB.value.brightness,
                 modifier = Modifier.weight(1f).aspectRatio(1f).padding(end = 32.dp).onGloballyPositioned { rowHeight.value = it.size.height }
             ) { newSaturation, newBrightness ->
-                saturation.value = newSaturation
-                brightness.value = newBrightness
-                oldHSB.value = HSB(hue.value, newSaturation, newBrightness)
+                oldHSB.value = HSB(oldHSB.value.hue, newSaturation, newBrightness)
                 onSelect.invoke(oldHSB.value.toColor().copy(alpha = alpha.value))
             }
-            HuePicker(colors = hues, hue = hue.value, modifier = Modifier.height(with(DensityAmbient.current) { rowHeight.value.toDp() })) { newHue ->
-                hue.value = newHue
-                oldHSB.value = HSB(newHue, saturation.value, brightness.value)
+            HuePicker(colors = hues, hue = oldHSB.value.hue, modifier = Modifier.height(with(DensityAmbient.current) { rowHeight.value.toDp() })) { newHue ->
+                oldHSB.value = HSB(newHue, oldHSB.value.saturation, oldHSB.value.brightness)
                 onSelect.invoke(oldHSB.value.toColor().copy(alpha = alpha.value))
             }
         }
         Text(text = "Opacity".toUpperCase(), style = MaterialTheme.typography.subtitle1, modifier = Modifier.padding(vertical = 32.dp))
-        OpacityPicker(color = HSB(hue.value, saturation.value, brightness.value).toColor().copy(alpha = 1f), alpha = alpha.value) { newAlpha ->
+        OpacityPicker(color = oldHSB.value.toColor().copy(alpha = 1f), alpha = alpha.value) { newAlpha ->
             alpha.value = newAlpha
-            oldHSB.value = HSB(hue.value, saturation.value, brightness.value)
             onSelect.invoke(oldHSB.value.toColor().copy(alpha = newAlpha))
         }
 
