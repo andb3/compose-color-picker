@@ -9,7 +9,8 @@ import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.stateFor
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -20,7 +21,7 @@ import androidx.core.graphics.toColorInt
 
 @Composable
 fun ColorPickerTextField(selected: Color, modifier: Modifier = Modifier, onValid: (color: Color) -> Unit) {
-    val currentText = stateFor(selected) { selected.toArgb().toHexString().replace("0x", "#") }
+    val currentText = remember(selected) { mutableStateOf(selected.toArgb().toHexString().replace("0x", "#")) }
 
     TextField(
         value = currentText.value.toUpperCase(),

@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawShadow
 import androidx.compose.ui.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Radius
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.Color
@@ -47,7 +48,7 @@ fun HuePicker(colors: List<Color>, hue: Float, modifier: Modifier = Modifier, on
                         endY = size.height
                     )
 
-                    drawRoundRect(gradient, radius = Radius(16.dp.toPx()))
+                    drawRoundRect(gradient, cornerRadius = CornerRadius(16.dp.toPx()))
                 }
             )
         },

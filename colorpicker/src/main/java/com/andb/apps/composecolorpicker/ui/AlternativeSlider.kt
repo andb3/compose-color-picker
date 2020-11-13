@@ -8,7 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.gesture.pressIndicatorGestureFilter
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
-import androidx.compose.ui.onGloballyPositioned
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.dp
 
@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 fun AlternativeSlider(position: Float, orientation: Orientation = Orientation.Horizontal, modifier: Modifier = Modifier, track: @Composable() BoxScope.() -> Unit, thumb: @Composable() BoxScope.() -> Unit, onChange: (Float) -> Unit){
     val (trackSize, setTrackSize) = remember { mutableStateOf(0) }
     val (thumbSize, setThumbSize) = remember { mutableStateOf(0) }
-    val draggedPx = stateFor(trackSize, thumbSize, position) { (trackSize - thumbSize) * position }
+    val draggedPx = remember(trackSize, thumbSize, position) { mutableStateOf((trackSize - thumbSize) * position) }
 
     fun update() {
         onChange.invoke(draggedPx.value / (trackSize - thumbSize).toFloat())

@@ -8,13 +8,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.stateFor
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawShadow
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Radius
-import androidx.compose.ui.geometry.RoundRect
-import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipPath
@@ -52,7 +50,7 @@ private fun OpacitySlider(color: Color, alpha: Float, modifier: Modifier = Modif
                         endX = size.width
                     )
                     drawTiles(4, 16.dp)
-                    drawRoundRect(gradient, radius = Radius(16.dp.toPx()))
+                    drawRoundRect(gradient, cornerRadius = CornerRadius(16.dp.toPx()))
                 }
             )
         },
@@ -77,7 +75,7 @@ private fun OpacitySlider(color: Color, alpha: Float, modifier: Modifier = Modif
 
 @Composable
 private fun OpacityTextField(alpha: Float, modifier: Modifier = Modifier, onSelect: (alpha: Float) -> Unit) {
-    val text = stateFor(alpha) { (alpha * 100).toInt().toString() }
+    val text = remember(alpha) { mutableStateOf((alpha * 100).toInt().toString()) }
 /*    Box(modifier){
         FilledTextField(value = text.value, onValueChange = { text.value = it }, label = {}, modifier = Modifier.height(32.dp))
     }*/

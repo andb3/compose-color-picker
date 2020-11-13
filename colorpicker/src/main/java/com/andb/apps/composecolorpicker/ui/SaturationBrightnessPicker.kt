@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawShadow
 import androidx.compose.ui.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Radius
 import androidx.compose.ui.gesture.DragObserver
@@ -20,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorStop
 import androidx.compose.ui.graphics.HorizontalGradient
 import androidx.compose.ui.graphics.VerticalGradient
-import androidx.compose.ui.onGloballyPositioned
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -39,7 +40,7 @@ import com.andb.apps.composecolorpicker.data.toColor
 @Composable
 fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float, modifier: Modifier = Modifier, onSelect: (saturation: Float, brightness: Float) -> Unit) {
     val (boxSize, setBoxSize) = remember { mutableStateOf(IntSize(0, 0)) }
-    val dragPosition = stateFor(boxSize, saturation, brightness) { Pair(boxSize.width * saturation, boxSize.height * (1f - brightness)) }
+    val dragPosition = remember(boxSize, saturation, brightness) { mutableStateOf(Pair(boxSize.width * saturation, boxSize.height * (1f - brightness))) }
     val thumbSize = with(DensityAmbient.current) { 24.dp.toIntPx() }
 
     fun update() {
@@ -79,9 +80,9 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
                     endY = size.height
                 )
 
-                drawRoundRect(Color.White, radius = Radius(12.dp.toPx()))
-                drawRoundRect(saturationGradient, radius = Radius(12.dp.toPx()))
-                drawRoundRect(lightnessGradient, radius = Radius(12.dp.toPx()))
+                drawRoundRect(Color.White, cornerRadius = CornerRadius(12.dp.toPx()))
+                drawRoundRect(saturationGradient, cornerRadius = CornerRadius(12.dp.toPx()))
+                drawRoundRect(lightnessGradient, cornerRadius = CornerRadius(12.dp.toPx()))
             }
             .onGloballyPositioned {
                 setBoxSize(it.size.run { IntSize(width - thumbSize, height - thumbSize) })

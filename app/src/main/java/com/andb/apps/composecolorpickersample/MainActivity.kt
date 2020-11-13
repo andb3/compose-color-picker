@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val currentTab = remember { mutableStateOf(Tabs.PICKER) }
             AppTheme {
-                Scaffold(
+                Scaffold (
                     topBar = {
                         Column(Modifier.drawShadow(4.dp)) {
                             TopAppBar(
