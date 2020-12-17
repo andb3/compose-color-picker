@@ -2,7 +2,7 @@ package com.andb.apps.composecolorpickersample
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.compose.foundation.Text
+import androidx.compose.material.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawShadow
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             AppTheme {
                 Scaffold (
                     topBar = {
-                        Column(Modifier.drawShadow(4.dp)) {
+                        Column(Modifier.shadow(4.dp)) {
                             TopAppBar(
                                 title = { Text(text = "ComposeColorPicker") },
                                 elevation = 0.dp

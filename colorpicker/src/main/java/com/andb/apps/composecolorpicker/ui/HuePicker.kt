@@ -9,14 +9,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawShadow
-import androidx.compose.ui.drawBehind
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Radius
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorStop
-import androidx.compose.ui.graphics.VerticalGradient
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.dp
 import com.andb.apps.composecolorpicker.data.HSB
 
@@ -42,12 +40,12 @@ fun HuePicker(colors: List<Color>, hue: Float, modifier: Modifier = Modifier, on
                 .fillMaxHeight()
                 .align(Alignment.Center)
                 .drawBehind {
-                    val gradient = VerticalGradient(
-                        colorStops = *colorStops.toTypedArray(),
+                    val gradient = Brush.verticalGradient(
                         startY = 0f,
-                        endY = size.height
+                        endY = size.height,
+                        tileMode = TileMode.Clamp,
+                        colorStops = colorStops.toTypedArray(),
                     )
-
                     drawRoundRect(gradient, cornerRadius = CornerRadius(16.dp.toPx()))
                 }
             )
@@ -57,7 +55,7 @@ fun HuePicker(colors: List<Color>, hue: Float, modifier: Modifier = Modifier, on
                 modifier = Modifier
                     .padding(2.dp)
                     .size(28.dp)
-                    .drawShadow(2.dp, shape = CircleShape)
+                    .shadow(2.dp, shape = CircleShape)
                     .border(BorderStroke(3.dp, MaterialTheme.colors.background), CircleShape)
                     .background(HSB(hue, 1f, 1f).toColor(), CircleShape),
             )

@@ -5,7 +5,6 @@ plugins {
 
 android {
     compileSdkVersion(Versions.compileSDK)
-    buildToolsVersion = "30.0.0"
 
     defaultConfig {
         applicationId = "com.andb.apps.composecolorpickersample"
@@ -30,13 +29,14 @@ android {
     kotlinOptions {
         apiVersion = "1.4"
         jvmTarget = "1.8"
+        useIR = true
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.compose
-        kotlinCompilerVersion = "1.4.0"
+        kotlinCompilerVersion = "1.4.21"
     }
 }
 
@@ -51,17 +51,8 @@ dependencies {
     implementation(Dependencies.Compose.icons)
     implementation(Dependencies.Compose.tooling)
     implementation(Dependencies.Compose.compiler)
-    implementation(Dependencies.Koin.android)
-    implementation(Dependencies.Koin.viewModel)
     testImplementation("junit:junit:4.13")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
     implementation(project(":colorpicker"))
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).configureEach {
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs += arrayOf("-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check")
-    }
 }

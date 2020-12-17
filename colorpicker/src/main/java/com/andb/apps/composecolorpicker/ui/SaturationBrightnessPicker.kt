@@ -9,18 +9,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawShadow
-import androidx.compose.ui.drawBehind
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Radius
 import androidx.compose.ui.gesture.DragObserver
 import androidx.compose.ui.gesture.dragGestureFilter
 import androidx.compose.ui.gesture.pressIndicatorGestureFilter
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorStop
-import androidx.compose.ui.graphics.HorizontalGradient
-import androidx.compose.ui.graphics.VerticalGradient
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.IntSize
@@ -69,16 +66,16 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
                 }
             })
             .drawBehind {
-                val saturationGradient = HorizontalGradient(
-                    colorStops = arrayOf(ColorStop(0f, Color.Transparent), ColorStop(1f, HSB(hue, 1f, 1f).toColor())),
+                val saturationGradient = Brush.horizontalGradient(
+                    ColorStop(0f, Color.Transparent), ColorStop(1f, HSB(hue, 1f, 1f).toColor()),
                     startX = 0f,
-                    endX = size.width
-                )
-                val lightnessGradient = VerticalGradient(
-                    colorStops = arrayOf(ColorStop(0f, Color.Transparent), ColorStop(1f, Color.Black)),
+                    endX = size.width,
+                    tileMode = TileMode.Clamp)
+                val lightnessGradient = Brush.verticalGradient(
+                    ColorStop(0f, Color.Transparent), ColorStop(1f, Color.Black),
                     startY = 0f,
-                    endY = size.height
-                )
+                    endY = size.height,
+                    tileMode = TileMode.Clamp)
 
                 drawRoundRect(Color.White, cornerRadius = CornerRadius(12.dp.toPx()))
                 drawRoundRect(saturationGradient, cornerRadius = CornerRadius(12.dp.toPx()))
@@ -96,7 +93,7 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
             modifier = Modifier
                 .offset(offsetDp.first, offsetDp.second)
                 .size(24.dp)
-                .drawShadow(2.dp, shape = CircleShape)
+                .shadow(2.dp, shape = CircleShape)
                 .border(BorderStroke(3.dp, Color.White), CircleShape)
                 .background(HSB(hue, saturation, brightness).toColor(), CircleShape)
         )

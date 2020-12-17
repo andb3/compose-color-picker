@@ -1,9 +1,9 @@
 package com.andb.apps.composecolorpicker.ui
 
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.drawBehind
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Box
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -11,7 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawShadow
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -42,10 +43,9 @@ private fun OpacitySlider(color: Color, alpha: Float, modifier: Modifier = Modif
             Box(modifier = Modifier
                 .height(32.dp)
                 .fillMaxWidth()
-                .gravity(Alignment.Center)
+                .align(Alignment.Center)
                 .drawBehind {
-                    val gradient = HorizontalGradient(
-                        colors = listOf(Color.Transparent, color),
+                    val gradient = Brush.horizontalGradient(colors = listOf(Color.Transparent, color),
                         startX = 0f,
                         endX = size.width
                     )
@@ -58,14 +58,13 @@ private fun OpacitySlider(color: Color, alpha: Float, modifier: Modifier = Modif
             Box(
                 modifier = Modifier
                     .padding(2.dp)
+                    .border(BorderStroke(3.dp, MaterialTheme.colors.background), CircleShape)
                     .size(28.dp)
-                    .drawShadow(2.dp, shape = CircleShape)
+                    .shadow(2.dp, shape = CircleShape)
                     .drawBehind {
                         drawTiles(2, 14.dp)
-                    },
-                shape = CircleShape,
-                border = BorderStroke(3.dp, MaterialTheme.colors.background),
-                backgroundColor = color.copy(alpha = alpha)
+                        drawCircle(color = color.copy(alpha = alpha), radius = 14.dp.toPx())
+                    }
             )
         },
         modifier = modifier,
@@ -82,8 +81,8 @@ private fun OpacityTextField(alpha: Float, modifier: Modifier = Modifier, onSele
 }
 
 private fun DrawScope.drawTiles(rows: Int, radius: Dp, color1: Color = Color.LightGray, color2: Color = Color.White){
-    val rrect = RoundRect(0f, 0f, size.width, size.height, Radius(radius.toPx()))
-    clipPath(Path().apply { addRRect(rrect) }) {
+    val roundRect = RoundRect(0f, 0f, size.width, size.height, CornerRadius(radius.toPx(), radius.toPx()))
+    clipPath(Path().apply { addRoundRect(roundRect) }) {
         for (row in 0 until rows){
             val tileSize = size.height / rows
             val tilesPerRow = (size.width/tileSize).toInt() + 1
