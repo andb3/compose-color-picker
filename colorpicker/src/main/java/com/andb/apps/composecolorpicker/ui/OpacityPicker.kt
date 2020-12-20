@@ -4,9 +4,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.TextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,9 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.*
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.OffsetMap
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -29,9 +45,9 @@ import androidx.compose.ui.unit.dp
  */
 @Composable
 fun OpacityPicker(color: Color, alpha: Float, modifier: Modifier = Modifier, onSelect: (alpha: Float) -> Unit) {
-    Row {
+    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         OpacitySlider(color = color, alpha = alpha, modifier = modifier.fillMaxWidth().weight(1f), onSelect = onSelect)
-        //OpacityTextField(alpha = alpha, onSelect = onSelect, modifier = Modifier.width(56.dp))
+        OpacityTextField(alpha = alpha, onSelect = onSelect, modifier = Modifier.width(48.dp))
     }
 }
 
@@ -75,9 +91,55 @@ private fun OpacitySlider(color: Color, alpha: Float, modifier: Modifier = Modif
 @Composable
 private fun OpacityTextField(alpha: Float, modifier: Modifier = Modifier, onSelect: (alpha: Float) -> Unit) {
     val text = remember(alpha) { mutableStateOf((alpha * 100).toInt().toString()) }
-/*    Box(modifier){
-        FilledTextField(value = text.value, onValueChange = { text.value = it }, label = {}, modifier = Modifier.height(32.dp))
-    }*/
+    val dragged = remember(alpha) { mutableStateOf(Pair(alpha, 0f)) }
+    val onBackground = MaterialTheme.colors.onBackground
+    Row(
+        modifier = modifier
+            .preferredSize(48.dp, 32.dp)
+            .drawBehind {
+                drawRect(
+                    color = onBackground.copy(alpha = .5f),
+                    topLeft = Offset.Zero.copy(y = this.size.height - 1.dp.toPx()),
+                    size = this.size.copy(height = 1.dp.toPx())
+                )
+            }
+            .background(
+                onBackground.copy(alpha = .05f),
+                shape = RoundedCornerShape(topLeft = 8.dp, topRight = 8.dp)
+            )
+            .draggable(
+                orientation = Orientation.Vertical,
+                onDragStopped = {
+                    dragged.value = Pair(alpha, 0f)
+                },
+                onDrag = { delta ->
+                    dragged.value = dragged.value.copy(second = dragged.value.second - delta) // minus since dragging down is a positive delta, but should make numbers go down
+                    val numbersDragged = dragged.value.second.toDp().value / 100
+                    onSelect.invoke((dragged.value.first + numbersDragged).coerceIn(0f..1f))
+                }
+            )
+            .draggable(
+                orientation = Orientation.Horizontal,
+                onDragStopped = {
+                    dragged.value = Pair(alpha, 0f)
+                },
+                onDrag = { delta ->
+                    dragged.value = dragged.value.copy(second = dragged.value.second + delta) // minus since dragging down is a positive delta, but should make numbers go down
+                    val numbersDragged = dragged.value.second.toDp().value / 100
+                    onSelect.invoke((dragged.value.first + numbersDragged).coerceIn(0f..1f))
+                }
+            ),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        BasicTextField(value = text.value, onValueChange = {
+            if (it.toIntOrNull() != null) {
+                onSelect.invoke((it.toInt() / 100f).coerceIn(0f..1f))
+            }
+        }, textStyle = TextStyle(textAlign = TextAlign.Center), visualTransformation = object : VisualTransformation {
+            override fun filter(text: AnnotatedString): TransformedText = TransformedText(text + AnnotatedString("%"), OffsetMap.identityOffsetMap)
+        })
+    }
 }
 
 private fun DrawScope.drawTiles(rows: Int, radius: Dp, color1: Color = Color.LightGray, color2: Color = Color.White){

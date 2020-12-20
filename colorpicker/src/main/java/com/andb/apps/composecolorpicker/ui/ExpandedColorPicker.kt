@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.AmbientDensity
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.dp
 import com.andb.apps.composecolorpicker.data.HSB
@@ -37,31 +38,32 @@ fun ExpandedColorPicker(selected: Color, modifier: Modifier = Modifier, onSelect
         oldHSB.value = tempHSB
     }
 
-    Column(modifier) {
-        Text(text = "Pick Color".toUpperCase(), style = MaterialTheme.typography.subtitle1, modifier = Modifier.padding(bottom = 32.dp))
-        Row {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(32.dp)) {
+        Text(text = "Pick Color".toUpperCase(), style = MaterialTheme.typography.subtitle1)
+        Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
             val rowHeight = remember { mutableStateOf(0) } // track height of SaturationLightnessPicker and give it to HuePicker since fillMaxHeight doesn't work as row has Constraints.Infinite so fillMax doesn't work
             SaturationBrightnessPicker(
                 oldHSB.value.hue, oldHSB.value.saturation, oldHSB.value.brightness,
-                modifier = Modifier.weight(1f).aspectRatio(1f).padding(end = 32.dp).onGloballyPositioned { rowHeight.value = it.size.height }
+                modifier = Modifier.weight(1f).aspectRatio(1f).onGloballyPositioned { rowHeight.value = it.size.height }
             ) { newSaturation, newBrightness ->
                 oldHSB.value = HSB(oldHSB.value.hue, newSaturation, newBrightness)
                 onSelect.invoke(oldHSB.value.toColor().copy(alpha = alpha.value))
             }
-            HuePicker(colors = hues, hue = oldHSB.value.hue, modifier = Modifier.height(with(DensityAmbient.current) { rowHeight.value.toDp() })) { newHue ->
+            HuePicker(colors = hues, hue = oldHSB.value.hue, modifier = Modifier.height(with(AmbientDensity.current) { rowHeight.value.toDp() })) { newHue ->
                 oldHSB.value = HSB(newHue, oldHSB.value.saturation, oldHSB.value.brightness)
                 onSelect.invoke(oldHSB.value.toColor().copy(alpha = alpha.value))
             }
         }
-        Text(text = "Opacity".toUpperCase(), style = MaterialTheme.typography.subtitle1, modifier = Modifier.padding(vertical = 32.dp))
-        OpacityPicker(color = oldHSB.value.toColor().copy(alpha = 1f), alpha = alpha.value) { newAlpha ->
-            alpha.value = newAlpha
-            onSelect.invoke(oldHSB.value.toColor().copy(alpha = newAlpha))
+        ColorPickerTextField(selected = oldHSB.value.toColor()) {
+            onSelect.invoke(it)
         }
-
-/*        ColorPickerTextField(selected = hsb.toColor().copy(alpha = alpha), modifier = Modifier.padding(top = 32.dp)) {
-
-        }*/
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Text(text = "Opacity".toUpperCase(), style = MaterialTheme.typography.subtitle1)
+            OpacityPicker(color = oldHSB.value.toColor().copy(alpha = 1f), alpha = alpha.value) { newAlpha ->
+                alpha.value = newAlpha
+                onSelect.invoke(oldHSB.value.toColor().copy(alpha = newAlpha))
+            }
+        }
     }
 }
 

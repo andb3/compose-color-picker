@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawShadow
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -75,7 +76,7 @@ fun ColorPalette(palette: Palette, name: String, selected: Color, modifier: Modi
                 huePalette.forEach { color ->
                     Box(
                         modifier = Modifier
-                                then (if (color == selected) Modifier.border(2.dp, Color.White).drawShadow(2.dp) else Modifier)
+                                then (if (color == selected) Modifier.border(2.dp, MaterialTheme.colors.background).shadow(2.dp) else Modifier)
                             .background(color)
                             .clickable { onSelect.invoke(color) }
                             .aspectRatio(1f)

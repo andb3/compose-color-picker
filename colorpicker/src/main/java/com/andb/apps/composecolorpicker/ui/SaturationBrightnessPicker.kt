@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -19,6 +20,7 @@ import androidx.compose.ui.gesture.dragGestureFilter
 import androidx.compose.ui.gesture.pressIndicatorGestureFilter
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.AmbientDensity
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -38,7 +40,7 @@ import com.andb.apps.composecolorpicker.data.toColor
 fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float, modifier: Modifier = Modifier, onSelect: (saturation: Float, brightness: Float) -> Unit) {
     val (boxSize, setBoxSize) = remember { mutableStateOf(IntSize(0, 0)) }
     val dragPosition = remember(boxSize, saturation, brightness) { mutableStateOf(Pair(boxSize.width * saturation, boxSize.height * (1f - brightness))) }
-    val thumbSize = with(DensityAmbient.current) { 24.dp.toIntPx() }
+    val thumbSize = with(AmbientDensity.current) { 24.dp.toIntPx() }
 
     fun update() {
         //percent dragged from bottom left
@@ -46,6 +48,7 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
         val yPct = 1f - dragPosition.value.second / boxSize.height
         onSelect.invoke(xPct, yPct)
     }
+
 
     Box(
         modifier = modifier
@@ -70,12 +73,14 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
                     ColorStop(0f, Color.Transparent), ColorStop(1f, HSB(hue, 1f, 1f).toColor()),
                     startX = 0f,
                     endX = size.width,
-                    tileMode = TileMode.Clamp)
+                    tileMode = TileMode.Clamp
+                )
                 val lightnessGradient = Brush.verticalGradient(
                     ColorStop(0f, Color.Transparent), ColorStop(1f, Color.Black),
                     startY = 0f,
                     endY = size.height,
-                    tileMode = TileMode.Clamp)
+                    tileMode = TileMode.Clamp
+                )
 
                 drawRoundRect(Color.White, cornerRadius = CornerRadius(12.dp.toPx()))
                 drawRoundRect(saturationGradient, cornerRadius = CornerRadius(12.dp.toPx()))
@@ -85,7 +90,7 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
                 setBoxSize(it.size.run { IntSize(width - thumbSize, height - thumbSize) })
             }
     ) {
-        val offsetDp = with(DensityAmbient.current) {
+        val offsetDp = with(AmbientDensity.current) {
             val positionPx = dragPosition.value
             Pair(positionPx.first.toDp(), positionPx.second.toDp())
         }
@@ -94,7 +99,7 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
                 .offset(offsetDp.first, offsetDp.second)
                 .size(24.dp)
                 .shadow(2.dp, shape = CircleShape)
-                .border(BorderStroke(3.dp, Color.White), CircleShape)
+                .border(BorderStroke(3.dp, MaterialTheme.colors.background), CircleShape)
                 .background(HSB(hue, saturation, brightness).toColor(), CircleShape)
         )
     }
