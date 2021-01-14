@@ -99,7 +99,7 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
                 .offset(offsetDp.first, offsetDp.second)
                 .size(24.dp)
                 .shadow(2.dp, shape = CircleShape)
-                .border(BorderStroke(3.dp, MaterialTheme.colors.background), CircleShape)
+                .border(BorderStroke(3.dp, Color.White), CircleShape)
                 .background(HSB(hue, saturation, brightness).toColor(), CircleShape)
         )
     }

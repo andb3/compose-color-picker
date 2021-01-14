@@ -1,35 +1,34 @@
 package com.andb.apps.composecolorpicker.ui
 
-import androidx.compose.ui.Alignment
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.*
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.RoundRect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.OffsetMap
+import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -74,7 +73,7 @@ private fun OpacitySlider(color: Color, alpha: Float, modifier: Modifier = Modif
             Box(
                 modifier = Modifier
                     .padding(2.dp)
-                    .border(BorderStroke(3.dp, MaterialTheme.colors.background), CircleShape)
+                    .border(BorderStroke(3.dp, Color.White), CircleShape)
                     .size(28.dp)
                     .shadow(2.dp, shape = CircleShape)
                     .drawBehind {
@@ -132,13 +131,19 @@ private fun OpacityTextField(alpha: Float, modifier: Modifier = Modifier, onSele
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        BasicTextField(value = text.value, onValueChange = {
-            if (it.toIntOrNull() != null) {
-                onSelect.invoke((it.toInt() / 100f).coerceIn(0f..1f))
+        BasicTextField(
+            value = text.value,
+            onValueChange = {
+                if (it.toIntOrNull() != null) {
+                    onSelect.invoke((it.toInt() / 100f).coerceIn(0f..1f))
+                }
+            },
+            textStyle = TextStyle(textAlign = TextAlign.Center, color = MaterialTheme.colors.onBackground),
+            visualTransformation = object : VisualTransformation {
+                override fun filter(text: AnnotatedString): TransformedText =
+                    TransformedText(text + AnnotatedString("%"), OffsetMapping.Identity)
             }
-        }, textStyle = TextStyle(textAlign = TextAlign.Center), visualTransformation = object : VisualTransformation {
-            override fun filter(text: AnnotatedString): TransformedText = TransformedText(text + AnnotatedString("%"), OffsetMap.identityOffsetMap)
-        })
+        )
     }
 }
 

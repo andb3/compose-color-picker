@@ -56,7 +56,7 @@ fun HuePicker(colors: List<Color>, hue: Float, modifier: Modifier = Modifier, on
                     .padding(2.dp)
                     .size(28.dp)
                     .shadow(2.dp, shape = CircleShape)
-                    .border(BorderStroke(3.dp, MaterialTheme.colors.background), CircleShape)
+                    .border(BorderStroke(3.dp, Color.White), CircleShape)
                     .background(HSB(hue, 1f, 1f).toColor(), CircleShape),
             )
         },
