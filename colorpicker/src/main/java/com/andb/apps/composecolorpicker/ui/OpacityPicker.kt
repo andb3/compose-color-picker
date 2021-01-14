@@ -133,9 +133,10 @@ private fun OpacityTextField(alpha: Float, modifier: Modifier = Modifier, onSele
     ) {
         BasicTextField(
             value = text.value,
-            onValueChange = {
-                if (it.toIntOrNull() != null) {
-                    onSelect.invoke((it.toInt() / 100f).coerceIn(0f..1f))
+            onValueChange = { newText ->
+                text.value = newText.filter { it in '0'..'9' }.let { if (it.length > 3) it.dropLast(it.length - 3) else it }
+                if (newText.toIntOrNull() != null) {
+                    onSelect.invoke((newText.toInt() / 100f).coerceIn(0f..1f))
                 }
             },
             textStyle = TextStyle(textAlign = TextAlign.Center, color = MaterialTheme.colors.onBackground),
