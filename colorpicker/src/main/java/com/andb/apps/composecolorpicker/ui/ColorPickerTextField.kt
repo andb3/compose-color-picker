@@ -30,7 +30,7 @@ fun ColorPickerTextField(selected: Color, modifier: Modifier = Modifier, onValid
             currentText.value.toColorIntOrNull()?.let { onValid.invoke(Color(it)) }
         },
         label = { Text(text = "Hex Color") },
-        leadingIcon = { Icon(imageVector = Icons.Filled.Palette) },
+        leadingIcon = { Icon(imageVector = Icons.Filled.Palette, null) },
         modifier = modifier.fillMaxWidth(),
         activeColor = MaterialTheme.colors.onBackground.copy(alpha = .5f),
         //isErrorValue = currentText.value.toColorIntOrNull() == null,

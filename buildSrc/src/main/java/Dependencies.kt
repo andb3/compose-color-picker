@@ -3,7 +3,7 @@ object Versions {
     const val targetSDK = 29
     const val compileSDK = 29
     const val kotlin = "1.4.21"
-    const val compose = "1.0.0-alpha10"
+    const val compose = "1.0.0-alpha11"
 }
 
 object Dependencies {

@@ -13,7 +13,7 @@ android {
         minSdkVersion(Versions.minSDK)
         targetSdkVersion(Versions.targetSDK)
         versionCode = 1
-        versionName = "0.2.2-alpha10"
+        versionName = "0.2.2-alpha11"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,7 +38,7 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.compose
-        kotlinCompilerVersion = "1.4.21"
+        kotlinCompilerVersion = "1.4.21-2"
     }
 }
 
