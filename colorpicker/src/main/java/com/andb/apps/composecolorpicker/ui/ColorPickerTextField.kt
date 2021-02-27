@@ -2,10 +2,7 @@ package com.andb.apps.composecolorpicker.ui
 
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.runtime.Composable
@@ -32,7 +29,6 @@ fun ColorPickerTextField(selected: Color, modifier: Modifier = Modifier, onValid
         label = { Text(text = "Hex Color") },
         leadingIcon = { Icon(imageVector = Icons.Filled.Palette, null) },
         modifier = modifier.fillMaxWidth(),
-        activeColor = MaterialTheme.colors.onBackground.copy(alpha = .5f),
         //isErrorValue = currentText.value.toColorIntOrNull() == null,
         visualTransformation = VisualTransformation.prefixTransformation(prefix = "#", color = MaterialTheme.colors.onBackground.copy(alpha = .5f))
     )

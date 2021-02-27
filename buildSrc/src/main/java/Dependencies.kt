@@ -3,10 +3,14 @@ object Versions {
     const val targetSDK = 29
     const val compileSDK = 29
     const val kotlin = "1.4.21"
-    const val compose = "1.0.0-alpha11"
+    const val compose = "1.0.0-beta01"
+    const val activity = "1.3.0-alpha03"
 }
 
 object Dependencies {
+    object Activity {
+        const val compose = "androidx.activity:activity-compose:${Versions.activity}"
+    }
     object Compose {
         const val layout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
         const val material = "androidx.compose.material:material:${Versions.compose}"

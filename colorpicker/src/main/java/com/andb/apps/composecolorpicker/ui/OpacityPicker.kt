@@ -3,7 +3,9 @@ package com.andb.apps.composecolorpicker.ui
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,7 +22,6 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -94,7 +95,7 @@ private fun OpacityTextField(alpha: Float, modifier: Modifier = Modifier, onSele
     val onBackground = MaterialTheme.colors.onBackground
     Row(
         modifier = modifier
-            .preferredSize(48.dp, 32.dp)
+            .size(48.dp, 32.dp)
             .drawBehind {
                 drawRect(
                     color = onBackground.copy(alpha = .5f),
@@ -104,16 +105,16 @@ private fun OpacityTextField(alpha: Float, modifier: Modifier = Modifier, onSele
             }
             .background(
                 onBackground.copy(alpha = .05f),
-                shape = RoundedCornerShape(topLeft = 8.dp, topRight = 8.dp)
+                shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
             )
             .draggable(
                 orientation = Orientation.Vertical,
                 onDragStopped = {
                     dragged.value = Pair(alpha, 0f)
                 },
-                onDrag = { delta ->
+                state = rememberDraggableState { delta ->
                     dragged.value = dragged.value.copy(second = dragged.value.second - delta) // minus since dragging down is a positive delta, but should make numbers go down
-                    val numbersDragged = dragged.value.second.toDp().value / 100
+                    val numbersDragged = dragged.value.second / 100
                     onSelect.invoke((dragged.value.first + numbersDragged).coerceIn(0f..1f))
                 }
             )
@@ -122,9 +123,9 @@ private fun OpacityTextField(alpha: Float, modifier: Modifier = Modifier, onSele
                 onDragStopped = {
                     dragged.value = Pair(alpha, 0f)
                 },
-                onDrag = { delta ->
-                    dragged.value = dragged.value.copy(second = dragged.value.second + delta) // minus since dragging down is a positive delta, but should make numbers go down
-                    val numbersDragged = dragged.value.second.toDp().value / 100
+                state = rememberDraggableState { delta ->
+                    dragged.value = dragged.value.copy(second = dragged.value.second + delta)
+                    val numbersDragged = dragged.value.second / 100
                     onSelect.invoke((dragged.value.first + numbersDragged).coerceIn(0f..1f))
                 }
             ),
@@ -140,10 +141,7 @@ private fun OpacityTextField(alpha: Float, modifier: Modifier = Modifier, onSele
                 }
             },
             textStyle = TextStyle(textAlign = TextAlign.Center, color = MaterialTheme.colors.onBackground),
-            visualTransformation = object : VisualTransformation {
-                override fun filter(text: AnnotatedString): TransformedText =
-                    TransformedText(text + AnnotatedString("%"), OffsetMapping.Identity)
-            }
+            visualTransformation = { text -> TransformedText(text + AnnotatedString("%"), OffsetMapping.Identity) }
         )
     }
 }

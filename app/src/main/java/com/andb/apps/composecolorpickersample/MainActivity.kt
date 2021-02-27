@@ -2,6 +2,7 @@ package com.andb.apps.composecolorpickersample
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.compose.material.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,10 +15,8 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawShadow
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
 import com.andb.apps.composecolorpicker.ui.ExpandedColorPicker
 import com.andb.apps.composecolorpicker.ui.MaterialPalette
@@ -58,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                     },
-                    bodyContent = {
+                    content = {
                         val currentColor = remember { mutableStateOf(Color(1f, 0f, 0f)) }
                         Column {
                             when (currentTab.value) {

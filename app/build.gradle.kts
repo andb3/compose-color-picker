@@ -36,7 +36,7 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.compose
-        kotlinCompilerVersion = "1.4.21-2"
+        kotlinCompilerVersion = "1.4.30"
     }
 }
 
@@ -51,6 +51,7 @@ dependencies {
     implementation(Dependencies.Compose.icons)
     implementation(Dependencies.Compose.tooling)
     implementation(Dependencies.Compose.compiler)
+    implementation(Dependencies.Activity.compose)
     testImplementation("junit:junit:4.13")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")

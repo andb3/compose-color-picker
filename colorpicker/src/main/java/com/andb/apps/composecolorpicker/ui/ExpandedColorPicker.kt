@@ -9,8 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.AmbientDensity
-import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.andb.apps.composecolorpicker.data.HSB
 
@@ -49,7 +48,7 @@ fun ExpandedColorPicker(selected: Color, modifier: Modifier = Modifier, onSelect
                 oldHSB.value = HSB(oldHSB.value.hue, newSaturation, newBrightness)
                 onSelect.invoke(oldHSB.value.toColor().copy(alpha = alpha.value))
             }
-            HuePicker(colors = hues, hue = oldHSB.value.hue, modifier = Modifier.height(with(AmbientDensity.current) { rowHeight.value.toDp() })) { newHue ->
+            HuePicker(colors = hues, hue = oldHSB.value.hue, modifier = Modifier.height(with(LocalDensity.current) { rowHeight.value.toDp() })) { newHue ->
                 oldHSB.value = HSB(newHue, oldHSB.value.saturation, oldHSB.value.brightness)
                 onSelect.invoke(oldHSB.value.toColor().copy(alpha = alpha.value))
             }
