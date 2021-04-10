@@ -1,6 +1,5 @@
 plugins {
     id("com.android.library")
-    id("com.github.dcendents.android-maven")
     kotlin("android")
 }
 
@@ -13,7 +12,7 @@ android {
         minSdkVersion(Versions.minSDK)
         targetSdkVersion(Versions.targetSDK)
         versionCode = 1
-        versionName = "0.2.2-beta01"
+        versionName = "0.2.2-beta04"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,7 +37,6 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.compose
-        kotlinCompilerVersion = "1.4.30"
     }
 }
 
@@ -46,7 +44,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")
     implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation("androidx.appcompat:appcompat:1.3.0-rc01")
     implementation("com.google.android.material:material:1.3.0")
     implementation(Dependencies.Compose.layout)
     implementation(Dependencies.Compose.material)
