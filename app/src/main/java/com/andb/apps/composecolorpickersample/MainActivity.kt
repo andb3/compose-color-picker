@@ -7,7 +7,9 @@ import androidx.compose.material.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -18,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.andb.apps.composecolorpicker.ui.ExpandedColorPicker
+import com.andb.apps.composecolorpicker.ui.ColorPickerLayout
 import com.andb.apps.composecolorpicker.ui.MaterialPalette
 import kotlin.random.Random
 
@@ -59,10 +61,10 @@ class MainActivity : AppCompatActivity() {
                     },
                     content = {
                         val currentColor = remember { mutableStateOf(Color(1f, 0f, 0f)) }
-                        Column {
+                        Column(Modifier.verticalScroll(rememberScrollState())) {
                             when (currentTab.value) {
                                 Tabs.PICKER -> {
-                                    ExpandedColorPicker(selected = currentColor.value, modifier = Modifier.padding(32.dp)) {
+                                    ColorPickerLayout(selected = currentColor.value, modifier = Modifier.padding(32.dp)) {
                                         currentColor.value = it
                                     }
                                 }
