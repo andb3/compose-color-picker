@@ -7,20 +7,17 @@ plugins {
 group = "com.github.andb3"
 
 android {
-    compileSdkVersion(Versions.compileSDK)
+    compileSdk = Versions.compileSDK
 
     defaultConfig {
-        minSdkVersion(Versions.minSDK)
-        targetSdkVersion(Versions.targetSDK)
-        versionCode = 1
-        versionName = "0.3.1-beta04"
+        minSdk = Versions.minSDK
+        targetSdk = Versions.targetSDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         getByName("release") {
-            minifyEnabled(false)
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -32,6 +29,7 @@ android {
         apiVersion = "1.4"
         jvmTarget = "1.8"
         useIR = true
+
     }
     buildFeatures {
         compose = true

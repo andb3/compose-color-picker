@@ -6,7 +6,7 @@ buildscript {
         maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.0.0-alpha14")
+        classpath("com.android.tools.build:gradle:7.0.0-beta03")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
         classpath("com.github.dcendents:android-maven-gradle-plugin:2.1")
 
