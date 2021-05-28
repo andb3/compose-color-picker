@@ -54,3 +54,19 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                // Applies the component for the release build variant.
+                from(components["release"])
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = "com.github.andb3"
+                artifactId = "compose-color-picker"
+                version = "0.3.2-beta07"
+            }
+        }
+    }
+}
