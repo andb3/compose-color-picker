@@ -2,8 +2,8 @@ object Versions {
     const val minSDK = 21
     const val targetSDK = 29
     const val compileSDK = 29
-    const val kotlin = "1.4.32"
-    const val compose = "1.0.0-beta07"
+    const val kotlin = "1.5.10"
+    const val compose = "1.0.0-beta08"
     const val activity = "1.3.0-alpha08"
 }
 

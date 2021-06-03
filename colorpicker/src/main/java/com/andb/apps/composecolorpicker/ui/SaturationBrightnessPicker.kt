@@ -49,12 +49,7 @@ fun SaturationBrightnessPicker(
     val adjustedBoxSize: Size = derivedStateOf { boxSize - thumbSize }.value
     val dragPosition = remember(adjustedBoxSize, saturation, brightness) { mutableStateOf(Offset(adjustedBoxSize.width * saturation, adjustedBoxSize.height * (1f - brightness))) }
 
-    fun update() {
-        //percent dragged from bottom left
-        val xPct = dragPosition.value.x / adjustedBoxSize.width
-        val yPct = 1f - dragPosition.value.y / adjustedBoxSize.height
-        onSelect.invoke(xPct, yPct)
-    }
+    val onSelectState = rememberUpdatedState(onSelect)
 
     Box(
         modifier = modifier
@@ -62,14 +57,16 @@ fun SaturationBrightnessPicker(
                 setBoxSize(it.size.toSize())
             }
             .pointerInput(adjustedBoxSize) {
-                detectTapGestures { pointer ->
-                    val onThumb = dragPosition.value.let { pointer.x in (it.x - thumbSize.width)..(it.x + thumbSize.width) && pointer.y in (it.y - thumbSize.height)..(it.y + thumbSize.height) }
-                    println("onThumb = $onThumb, pointer = $pointer, dragPosition = ${dragPosition.value}")
-                    if (!onThumb) {
-                        dragPosition.value = Offset(pointer.x.coerceIn(0f..adjustedBoxSize.width), pointer.y.coerceIn(0f..adjustedBoxSize.height))
-                        update()
+                detectTapGestures(
+                    onPress = { pointer ->
+                        val onThumb = dragPosition.value.let { pointer.x in (it.x - thumbSize.width)..(it.x + thumbSize.width) && pointer.y in (it.y - thumbSize.height)..(it.y + thumbSize.height) }
+                        println("onThumb = $onThumb, pointer = $pointer, dragPosition = ${dragPosition.value}")
+                        if (!onThumb) {
+                            dragPosition.value = Offset(pointer.x.coerceIn(0f..adjustedBoxSize.width), pointer.y.coerceIn(0f..adjustedBoxSize.height))
+                            onSelectState.value.invoke(dragPosition.value.x / adjustedBoxSize.width, 1f - dragPosition.value.y / adjustedBoxSize.height)
+                        }
                     }
-                }
+                )
             }
             .pointerInput(adjustedBoxSize) {
                 detectDragGestures(
@@ -80,7 +77,7 @@ fun SaturationBrightnessPicker(
                         val newX = (dragPosition.value.x + dragAmount.x).coerceIn(0f..adjustedBoxSize.width)
                         val newY = (dragPosition.value.y + dragAmount.y).coerceIn(0f..adjustedBoxSize.height)
                         dragPosition.value = Offset(newX.coerceIn(0f..adjustedBoxSize.width), newY.coerceIn(0f..adjustedBoxSize.height))
-                        update()
+                        onSelectState.value.invoke(dragPosition.value.x / adjustedBoxSize.width, 1f - dragPosition.value.y / adjustedBoxSize.height)
                     }
                 )
             }

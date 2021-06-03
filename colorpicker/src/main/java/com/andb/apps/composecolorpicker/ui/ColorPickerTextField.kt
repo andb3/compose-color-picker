@@ -15,12 +15,12 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.core.graphics.toColorInt
 import com.andb.apps.composecolorpicker.prefixTransformation
 
-
 @Composable
 fun ColorPickerTextField(selected: Color, modifier: Modifier = Modifier, onValid: (color: Color) -> Unit) {
+    selected.toArgb()
     val currentText = remember(selected) { mutableStateOf(selected.toArgb().toUInt().toString(16).removePrefix("ff")) }
     TextField(
-        value = currentText.value.toUpperCase(),
+        value = currentText.value.uppercase(),
         onValueChange = { text ->
             currentText.value = text.filterValidHexColor()
             currentText.value.toColorIntOrNull()?.let { onValid.invoke(Color(it)) }

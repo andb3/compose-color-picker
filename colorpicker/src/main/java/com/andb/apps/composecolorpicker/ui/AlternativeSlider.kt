@@ -28,9 +28,7 @@ fun AlternativeSlider(
     val adjustedTrackSize = derivedStateOf { trackSize - thumbSize }.value
     val draggedPx = remember(adjustedTrackSize, position) { mutableStateOf(adjustedTrackSize * position) }
 
-    fun update() {
-        onChange.invoke(draggedPx.value / adjustedTrackSize)
-    }
+    val onChangeState = rememberUpdatedState(onChange)
 
     Box(
         modifier = modifier
@@ -45,19 +43,21 @@ fun AlternativeSlider(
                         val delta = if (orientation == Orientation.Horizontal) dragAmount.x else dragAmount.y
                         val newPx = (draggedPx.value + delta)
                         draggedPx.value = newPx.coerceIn(0f..adjustedTrackSize)
-                        update()
+                        onChangeState.value.invoke(draggedPx.value / adjustedTrackSize)
                     }
                 )
             }
             .pointerInput(adjustedTrackSize) {
-                this.detectTapGestures {
-                    val pressedPosition = if (orientation == Orientation.Horizontal) it.x else it.y
-                    val onThumb = pressedPosition in draggedPx.value..(draggedPx.value + thumbSize)
-                    if (!onThumb) {
-                        draggedPx.value = pressedPosition.coerceIn(0f..adjustedTrackSize)
-                        update()
+                detectTapGestures(
+                    onPress = {
+                        val pressedPosition = if (orientation == Orientation.Horizontal) it.x else it.y
+                        val onThumb = pressedPosition in draggedPx.value..(draggedPx.value + thumbSize)
+                        if (!onThumb) {
+                            draggedPx.value = pressedPosition.coerceIn(0f..adjustedTrackSize)
+                            onChangeState.value.invoke(draggedPx.value / adjustedTrackSize)
+                        }
                     }
-                }
+                )
             }
     ) {
         Box(Modifier.onGloballyPositioned { setTrackSize(it.size.toSize().run { if (orientation == Orientation.Horizontal) width else height }) }) {

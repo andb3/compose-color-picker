@@ -10,7 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ComposeColorPickerSample.NoActionBar">
-        <activity android:name="com.andb.apps.composecolorpickersample.MainActivity">
+        <activity
+            android:name="com.andb.apps.composecolorpickersample.MainActivity"
+            android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

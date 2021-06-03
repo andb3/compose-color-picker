@@ -26,7 +26,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        apiVersion = "1.4"
         jvmTarget = "1.8"
         useIR = true
 
@@ -42,15 +41,15 @@ android {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")
-    implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.appcompat:appcompat:1.3.0-rc01")
+    implementation("androidx.core:core-ktx:1.5.0")
+    implementation("androidx.appcompat:appcompat:1.4.0-alpha01")
     implementation("com.google.android.material:material:1.3.0")
     implementation(Dependencies.Compose.layout)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.icons)
     implementation(Dependencies.Compose.tooling)
     implementation(Dependencies.Compose.compiler)
-    testImplementation("junit:junit:4.13")
+    testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 }
@@ -65,7 +64,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = "com.github.andb3"
                 artifactId = "compose-color-picker"
-                version = "0.3.2-beta07"
+                version = "0.3.2-beta08"
             }
         }
     }
